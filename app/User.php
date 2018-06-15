@@ -81,7 +81,7 @@ public function is_following($userId) {
     return $this->followings()->where('follow_id', $userId)->exists();
 }
 
-public function feed_microposts()
+  public function feed_microposts()
     {
         $follow_user_ids = $this->followings()-> pluck('users.id')->toArray();
         $follow_user_ids[] = $this->id;
@@ -91,7 +91,7 @@ public function feed_microposts()
 
 public function favoritings()
     {
-        return $this->belongsToMany(User::class, 'user_favorite', 'user_id', 'favorite_id')->withTimestamps();
+        return $this->belongsToMany(Micropost::class, 'user_favorite', 'user_id', 'favorite_id')->withTimestamps();
     }
     
 public function favorite($micropostId)
