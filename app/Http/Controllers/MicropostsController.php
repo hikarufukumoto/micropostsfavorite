@@ -47,6 +47,6 @@ class MicropostsController extends Controller
             $micropost->delete();
         }
 
-        return redirect()->back();
+         return redirect()->back();
     }
 }
