@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/favoritings','UsersController@favoritings');
 Route::get('/', 'MicropostsController@index');
 Route::get('signup', 'Auth\RegisterController@showRegistrationForm')->name('signup.get');
 Route::post('signup', 'Auth\RegisterController@register')->name('signup.post');
@@ -19,8 +19,9 @@ Route::post('login', 'Auth\LoginController@login')->name('login.post');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout.get');
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
-    Route::resource('microposts', 'MicropostsController', ['only' => ['store', 'destroy']]);
+   
 });
+ Route::resource('microposts', 'MicropostsController', ['only' => ['store', 'destroy']]);
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
     Route::group(['prefix' => 'users/{id}'], function () {
@@ -28,7 +29,18 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('unfollow', 'UserFollowController@destroy')->name('user.unfollow');
         Route::get('followings', 'UsersController@followings')->name('users.followings');
         Route::get('followers', 'UsersController@followers')->name('users.followers');
+        
+       //Route::get('favoritings', 'UserFavoriteController@favoritings')->name('user.favoritings');
+      // Route::delete('unfavorite', 'UserFavoriteController@destroy')->name('user.unfavorite');
+       Route::get('favoritings', 'UsersController@favoritings')->name('users.favoritings');
+
     });
 
-    Route::resource('microposts', 'MicropostsController', ['only' => ['store', 'destroy']]);
+    Route::resource('microposts', 'MicropostsController', ['only' => ['store', 'destroy','favorite']]);
+    
+     Route::group(['prefix' => 'microposts/{id}'], function () {
+     Route::post('favorite', 'UserFavoriteController@store')->name('micropost.favorite');
+     Route::delete('unfavorite', 'UserFavoriteController@destroy')->name('micropost.unfavorite');
+         
+     });
 });
